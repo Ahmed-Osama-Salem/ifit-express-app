@@ -39,7 +39,10 @@ const handleIsUserExists = async (req: Request, res: Response) => {
       })
     );
   }
-  const isPasswordCorrect = hashing.BCryptComper(password, findUser.password);
+  const isPasswordCorrect = hashing.BCryptComper(
+    password,
+    findUser.password as string
+  );
 
   if (!isPasswordCorrect) {
     return res.status(StatusCode.Validation).json(
