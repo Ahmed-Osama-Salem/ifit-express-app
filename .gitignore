@@ -1,0 +1,8 @@
+#misc
+.DS_Store
+# .env*
+dist
+
+# .env
+node_modules
+node_modules
