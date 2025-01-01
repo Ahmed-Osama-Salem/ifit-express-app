@@ -1,5 +1,5 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import express, { Request, Response } from "express";
+import dotenv from "dotenv";
 import { checkRouter } from "./routes/checkRouter";
 import { authRouter } from "./routes/authRouter";
 import connectionDB from "./config/DB";
@@ -11,18 +11,20 @@ import { questionRouter } from "./routes/questions";
 import blogRouter from "./routes/blogRoutes/blogRouter";
 import categoriesRouter from "./routes/categoriesRouter";
 import tagsRouter from "./routes/TagsRouter";
-import { Request, Response } from "express";
 import uploadFilesRouter from "./routes/uploadFilesRouter";
 
 const path = require("path");
-const app = express();
 
 dotenv.config();
 connectionDB();
 
+const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Routers
 app.use(authRouter);
 app.use(checkRouter);
 app.use(oAuthRouter);
@@ -41,17 +43,16 @@ app.get("/testupload", (req: Request, res: Response) => {
   </div>
   <input type="submit" value="Upload" />
   </form>
-  
   `);
 });
 
 app.use(uploadFilesRouter);
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// Default route
 app.get("/", async (req: Request, res: Response) => {
   res.status(200).send({ user: "welcome" });
 });
 
-app.listen(8000, () => {
-  console.log("port is running");
-});
+// Export the app for Vercel
+export default app;
